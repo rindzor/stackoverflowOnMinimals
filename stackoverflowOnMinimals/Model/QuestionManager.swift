@@ -18,7 +18,6 @@ struct QuestionManager {
     func deleteQuestion(id: Int){
         let url = URL(string: deleteQuestionUrl)!
                var request = URLRequest(url: url)
-        //let boundary = "Boundary-\(UUID().uuidString)"
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
                request.httpMethod = "DELETE"
                let parameters: [String: Any] = [

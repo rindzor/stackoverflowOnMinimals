@@ -17,7 +17,3 @@ struct QuestionModel: Codable {
     let id: Int
     let question: String
 }
-
-//struct QuestionData: Codable {
-//
-//}
