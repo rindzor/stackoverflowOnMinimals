@@ -111,6 +111,5 @@ extension UTableViewController: AnswerViewControllerDelegate {
         self.hasAnswer = true
         self.tableView.reloadData()
         self.foo()
-        print("WHY?????")
     }
 }

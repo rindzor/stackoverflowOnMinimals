@@ -76,25 +76,49 @@
 		042732C92430AB2600896EFF /* stackoverflowOnMinimals */ = {
 			isa = PBXGroup;
 			children = (
+				042732F82435E67000896EFF /* Model */,
+				042732F92435E68700896EFF /* View */,
+				042732FA2435E69600896EFF /* Controller */,
 				042732CA2430AB2700896EFF /* AppDelegate.swift */,
 				042732CC2430AB2700896EFF /* SceneDelegate.swift */,
 				042732D02430AB2700896EFF /* Main.storyboard */,
-				042732F42431E8A900896EFF /* UTableViewController.swift */,
-				042732EE2431E05B00896EFF /* ATableViewController.swift */,
-				042732F02431E0D100896EFF /* ATableViewCell.swift */,
-				042732F12431E0D100896EFF /* ATableViewCell.xib */,
-				042732EC2431339600896EFF /* AskViewController.swift */,
-				042732F62431F0D800896EFF /* AnswerViewController.swift */,
-				042732DE2430ABA800896EFF /* AnsweredTableViewController.swift */,
-				042732E42430B13000896EFF /* QuestionManager.swift */,
-				042732E62430B20300896EFF /* QuestionModel.swift */,
-				042732E02430ABDE00896EFF /* TableViewCell.swift */,
-				042732E12430ABDE00896EFF /* TableViewCell.xib */,
 				042732D32430AB2900896EFF /* Assets.xcassets */,
 				042732D52430AB2900896EFF /* LaunchScreen.storyboard */,
 				042732D82430AB2900896EFF /* Info.plist */,
 			);
 			path = stackoverflowOnMinimals;
+			sourceTree = "<group>";
+		};
+		042732F82435E67000896EFF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				042732E42430B13000896EFF /* QuestionManager.swift */,
+				042732E62430B20300896EFF /* QuestionModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		042732F92435E68700896EFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				042732F12431E0D100896EFF /* ATableViewCell.xib */,
+				042732E12430ABDE00896EFF /* TableViewCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		042732FA2435E69600896EFF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				042732F42431E8A900896EFF /* UTableViewController.swift */,
+				042732EE2431E05B00896EFF /* ATableViewController.swift */,
+				042732F02431E0D100896EFF /* ATableViewCell.swift */,
+				042732EC2431339600896EFF /* AskViewController.swift */,
+				042732F62431F0D800896EFF /* AnswerViewController.swift */,
+				042732DE2430ABA800896EFF /* AnsweredTableViewController.swift */,
+				042732E02430ABDE00896EFF /* TableViewCell.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
