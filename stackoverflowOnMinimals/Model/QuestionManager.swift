@@ -9,14 +9,10 @@
 import Foundation
 
 struct QuestionManager {
-    let allAnsweredQuestionsUrl = "https://sinspython.herokuapp.com/allQuestion"
-    let allUnansweredQuestionsUrl = "https://sinspython.herokuapp.com//allQuestionNoAnswer"
-    let newQuestionUrl = "http://sinspython.herokuapp.com/newQuestion"
-    let answerQuestionUrl = "https://sinspython.herokuapp.com/sendAnswer"
-    let deleteQuestionUrl = "http://sinspython.herokuapp.com/question"
+    let masterUrl = "https://sinspython.herokuapp.com/"
     
     func deleteQuestion(id: Int){
-        let url = URL(string: deleteQuestionUrl)!
+        if let url = URL(string: masterUrl+"question"){
                var request = URLRequest(url: url)
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
                request.httpMethod = "DELETE"
@@ -36,10 +32,11 @@ struct QuestionManager {
                    print("responseString = \(responseString)")
                }
                task.resume()
+        }
     }
     
     func answerQuestion(text: String, id: Int){
-        let url = URL(string: answerQuestionUrl)!
+        if let url = URL(string: masterUrl+"sendAnswer"){
            var request = URLRequest(url: url)
     
            request.httpMethod = "POST"
@@ -60,74 +57,77 @@ struct QuestionManager {
                print("responseString = \(responseString)")
            }
            task.resume()
+        }
     }
     
     func sendNewQuestion(text: String){
-        let url = URL(string: newQuestionUrl)!
-        var request = URLRequest(url: url)
- 
-        request.httpMethod = "POST"
-        let parameters: [String: Any] = [
-            "question": text,
-            "expert": 1
-        ]
-        request.httpBody = parameters.percentEncoded()
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, urlResponse, error) in
-            guard let data = data, let urlResponse = urlResponse as? HTTPURLResponse, error == nil
-                else {
-                    print("error", error ?? "Unknown error")
-                    return
-                }
+        if let url = URL(string: masterUrl+"newQuestion"){
+            var request = URLRequest(url: url)
+     
+            request.httpMethod = "POST"
+            let parameters: [String: Any] = [
+                "question": text,
+                "expert": 1
+            ]
+            request.httpBody = parameters.percentEncoded()
             
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
+            let task = URLSession.shared.dataTask(with: request) { (data, urlResponse, error) in
+                guard let data = data, let urlResponse = urlResponse as? HTTPURLResponse, error == nil
+                    else {
+                        print("error", error ?? "Unknown error")
+                        return
+                    }
+                
+                let responseString = String(data: data, encoding: .utf8)
+                print("responseString = \(responseString)")
+            }
+            task.resume()
         }
-        task.resume()
     }
     
     func fetchAnsweredQuestion(questionComplitionHandler: @escaping ([QuestionModel]?, Error?) -> Void) {
-        let url = URL(string: allAnsweredQuestionsUrl)
-        let task = URLSession.shared.dataTask(with: url!){ (data, urlResponse, error) in
-            if error != nil{
-                print("ERROR_1")
-                questionComplitionHandler(nil, error)
-            }
-            if data != nil {
-                let decoder = JSONDecoder()
-                do {
-                    let decodedData = try decoder.decode([QuestionModel].self, from: data!)
-                    questionComplitionHandler(decodedData, nil)
-                } catch {
-                    print("ERROR_2")
+        if let url = URL(string: masterUrl+"allQuestion"){
+            let task = URLSession.shared.dataTask(with: url){ (data, urlResponse, error) in
+                if error != nil{
+                    print("ERROR_1")
                     questionComplitionHandler(nil, error)
                 }
+                if let data = data{
+                    let decoder = JSONDecoder()
+                    do {
+                        let decodedData = try decoder.decode([QuestionModel].self, from: data)
+                        questionComplitionHandler(decodedData, nil)
+                    } catch {
+                        print("ERROR_2")
+                        questionComplitionHandler(nil, error)
+                    }
+                }
             }
+            task.resume()
         }
-        task.resume()
     }
     
     func fetchUnansweredQuestion(questionComplitionHandler: @escaping ([QuestionModel]?, Error?) -> Void) {
-        let url = URL(string: allUnansweredQuestionsUrl)
-        let task = URLSession.shared.dataTask(with: url!){ (data, urlResponse, error) in
-            if error != nil{
-                print("ERROR_3")
-                questionComplitionHandler(nil, error)
-            }
-            if data != nil {
-                let decoder = JSONDecoder()
-                do {
-                    let decodedData = try decoder.decode([QuestionModel].self, from: data!)
-                    questionComplitionHandler(decodedData, nil)
-                } catch {
-                    print("ERROR_4")
+        if let url = URL(string: masterUrl+"allQuestionNoAnswer"){
+            let task = URLSession.shared.dataTask(with: url){ (data, urlResponse, error) in
+                if error != nil{
+                    print("ERROR_3")
                     questionComplitionHandler(nil, error)
                 }
+                if let data = data{
+                    let decoder = JSONDecoder()
+                    do {
+                        let decodedData = try decoder.decode([QuestionModel].self, from: data)
+                        questionComplitionHandler(decodedData, nil)
+                    } catch {
+                        print("ERROR_4")
+                        questionComplitionHandler(nil, error)
+                    }
+                }
             }
+            task.resume()
         }
-        task.resume()
     }
-    
 }
 
 extension Dictionary {

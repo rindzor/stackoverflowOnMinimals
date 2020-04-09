@@ -24,12 +24,13 @@ class UTableViewController: UITableViewController {
         button = UIButton(frame: CGRect(origin: CGPoint(x: self.view.frame.width/2 - 175/2, y: self.view.frame.height - 110), size: CGSize(width: 175, height: 50)))
         button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 25
+        
         button.setTitle("Leave an answer", for: UIControl.State.normal)
         button.titleLabel?.textColor = .black
-        
-        
         button.addTarget(self, action: #selector(answerButtonPressed), for: UIControl.Event.touchUpInside)
-        self.view.addSubview(button)
+        if !hasAnswer {
+            self.view.addSubview(button)
+        }
         
     }
     
@@ -58,7 +59,7 @@ class UTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if hasAnswer == false{
+        if !hasAnswer {
             return 1
         }
         else {

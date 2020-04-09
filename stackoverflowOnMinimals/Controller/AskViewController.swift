@@ -28,18 +28,18 @@ class AskViewController: UIViewController {
         view.endEditing(true)
     }
     @IBAction func returnKeyPressed(_ sender: Any) {
-        if textfield.text != "" {
+        if let text = textfield.text, textfield.text != "" {
             print("YEAAAH")
             self.dismiss(animated: true, completion: nil)
-            questionManager.sendNewQuestion(text: textfield.text!)
+            questionManager.sendNewQuestion(text: text)
         }
         
     }
     
     @IBAction func sendButtonPressed(_ sender: Any) {
-        if textfield.text != "" {
+        if let text = textfield.text, textfield.text != "" {
             self.dismiss(animated: true, completion: nil)
-            questionManager.sendNewQuestion(text: textfield.text!)
+            questionManager.sendNewQuestion(text: text)
         }
         
     }

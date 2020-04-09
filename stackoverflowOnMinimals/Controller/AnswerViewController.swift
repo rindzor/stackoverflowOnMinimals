@@ -22,19 +22,16 @@ class AnswerViewController: UIViewController {
     @IBOutlet weak var sendButton: UIButton!
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
-        if textfield.text != "" {
-            questionManager.answerQuestion(text: textfield.text!, id: questionId!)
-            //self.dismiss(animated: true, completion: nil)
-            delegate?.fetchAnswer(text: textfield.text!)
-            
+        if let text = textfield.text, textfield.text != "", let id = questionId {
+            questionManager.answerQuestion(text: text, id: id)
+            delegate?.fetchAnswer(text: text)
         }
     }
+    
     @IBAction func returnKeyPressed(_ sender: Any) {
-        if textfield.text != "" {
-            questionManager.answerQuestion(text: textfield.text!, id: questionId!)
-            //self.dismiss(animated: true, completion: nil)
-            delegate?.fetchAnswer(text: textfield.text!)
-            
+        if let text = textfield.text, textfield.text != "", let id = questionId {
+            questionManager.answerQuestion(text: text, id: id)
+            delegate?.fetchAnswer(text: text)
         }
     }
     

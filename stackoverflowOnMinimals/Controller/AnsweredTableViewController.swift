@@ -8,26 +8,6 @@
 
 import UIKit
 
-struct AnsweredData {
-    let answer: String
-    let asked_by_id: Int
-    let asking_Name: String
-    let expert_Name: String
-    let expert_id: Int
-    let id: Int
-    let question: String
-}
-
-struct UnansweredData {
-    let answer: String
-    let asked_by_id: Int
-    let asking_Name: String
-    let expert_Name: String
-    let expert_id: Int
-    let id: Int
-    let question: String
-}
-
 class AnsweredTableViewController: UITableViewController {
 
     var index = true
@@ -36,8 +16,8 @@ class AnsweredTableViewController: UITableViewController {
     var trashButton: UIButton!
     
     var questionManager = QuestionManager()
-    var answeredData: [AnsweredData] = []
-    var unansweredData: [UnansweredData] = []
+    var answeredData: [QuestionData] = []
+    var unansweredData: [QuestionData] = []
     var segmentControl: UISegmentedControl {
         let sc = UISegmentedControl(items: ["Answered", "Unanswered"])
         sc.selectedSegmentIndex = 0
@@ -85,11 +65,13 @@ class AnsweredTableViewController: UITableViewController {
     func loadAnsweredQuestions(){
         var _ = questionManager.fetchAnsweredQuestion { (questionModel, error) in
             DispatchQueue.main.async {
-                for question in questionModel! {
-                    if !self.answeredData.contains{$0.id == question.id}{
-                        self.answeredData.append(AnsweredData(answer: question.answer ?? "", asked_by_id: question.asked_by_id, asking_Name: question.asking_Name, expert_Name: question.expert_Name, expert_id: question.expert_id, id: question.id, question: question.question))
-                        if self.unansweredData.contains(where: {$0.id == question.id}){
-                            self.unansweredData = self.unansweredData.filter { $0.id !=  question.id}
+                if let questionModel = questionModel {
+                    for question in questionModel {
+                        if !self.answeredData.contains{$0.id == question.id}{
+                            self.answeredData.append(QuestionData(answer: question.answer ?? "", asked_by_id: question.asked_by_id, asking_Name: question.asking_Name, expert_Name: question.expert_Name, expert_id: question.expert_id, id: question.id, question: question.question))
+                            if self.unansweredData.contains(where: {$0.id == question.id}){
+                                self.unansweredData = self.unansweredData.filter { $0.id !=  question.id}
+                            }
                         }
                     }
                 }
@@ -104,9 +86,11 @@ class AnsweredTableViewController: UITableViewController {
     func loadUnansweredQuestions(){
         var _ = questionManager.fetchUnansweredQuestion { (questionModel, error) in
             DispatchQueue.main.async {
-                for question in questionModel! {
-                    if !self.unansweredData.contains{$0.id == question.id}{
-                        self.unansweredData.append(UnansweredData(answer: question.answer ?? "", asked_by_id: question.asked_by_id, asking_Name: question.asking_Name, expert_Name: question.expert_Name, expert_id: question.expert_id, id: question.id, question: question.question))
+                if let questionModel = questionModel {
+                    for question in questionModel {
+                        if !self.unansweredData.contains{$0.id == question.id}{
+                            self.unansweredData.append(QuestionData(answer: question.answer ?? "", asked_by_id: question.asked_by_id, asking_Name: question.asking_Name, expert_Name: question.expert_Name, expert_id: question.expert_id, id: question.id, question: question.question))
+                        }
                     }
                 }
             }
@@ -166,12 +150,12 @@ class AnsweredTableViewController: UITableViewController {
     @objc func floatingButtonPressed() {
         if tableView.isEditing {
             if let selection = tableView.indexPathsForSelectedRows {
+                let descendingSelection = (selection.sorted(by: { (i, j) -> Bool in
+                    return i[1] > j[1]
+                }))
                 if selection.count > 0 {
                     
-                    // нужен счетчик так как при удалении из массивов вопросов, там количество уменьшается, а indexPath.row смодет выйти за пределы массивов
-                    var i = 0
-                    
-                    for indexPath in selection {
+                    for indexPath in descendingSelection {
                         let cell = tableView.cellForRow(at: indexPath) as! TableViewCell
                         if self.index {
                             self.answeredData.remove(at: indexPath.row)
@@ -179,15 +163,13 @@ class AnsweredTableViewController: UITableViewController {
 
                         }
                         else {
-                            self.unansweredData.remove(at: indexPath.row - i)
+                            self.unansweredData.remove(at: indexPath.row)
                             self.questionManager.deleteQuestion(id: cell.id)
 
                         }
-                        i += 1
                     }
                     
                     tableView.deleteRows(at: selection, with: .automatic)
-                    //tableView.isEditing = false
                     changeAppearenceToAdd()
                 }
             }
@@ -219,24 +201,25 @@ class AnsweredTableViewController: UITableViewController {
         }
         if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if index {
-                let vc = storyboard.instantiateViewController(withIdentifier: "ATableViewController") as! ATableViewController
-                vc.question = cell.questionLabel.text!
-                vc.asker = cell.authorLabel.text!
-                vc.answer = answeredData[indexPath.row].answer
-                vc.answered = answeredData[indexPath.row].expert_Name
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            else {
+ 
                 let vc = storyboard.instantiateViewController(withIdentifier: "UTableViewController") as! UTableViewController
-                vc.question = cell.questionLabel.text!
-                vc.asker = cell.authorLabel.text!
-                vc.questionId = unansweredData[indexPath.row].id
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+                if let questionText = cell.questionLabel.text, let authorText = cell.authorLabel.text{
+                    vc.question = questionText
+                    vc.asker = authorText
+                }
+                if index {
+                    vc.hasAnswer = true
+                    vc.answer = answeredData[indexPath.row].answer
+                    vc.answered = answeredData[indexPath.row].expert_Name
+                }
+                else {
+                    vc.questionId = unansweredData[indexPath.row].id
+                }
+            self.navigationController?.pushViewController(vc, animated: true)
         }
-        //self.tableView.deselectRow(at: indexPath, animated: true)
     }
+            
+
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -244,7 +227,7 @@ class AnsweredTableViewController: UITableViewController {
             return answeredData.count
         }
         else {
-             return unansweredData.count
+            return unansweredData.count
         }
     }
 
@@ -252,17 +235,11 @@ class AnsweredTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = Bundle.main.loadNibNamed("TableViewCell", owner: self, options: nil)?.first as! TableViewCell
+        
+        cell.questionLabel.text = index ? answeredData[indexPath.row].question : unansweredData[indexPath.row].question
+        cell.authorLabel.text = index ? answeredData[indexPath.row].asking_Name : unansweredData[indexPath.row].asking_Name
+        cell.id = index ? answeredData[indexPath.row].id : unansweredData[indexPath.row].id
 
-        if index {
-            cell.questionLabel.text = answeredData[indexPath.row].question
-            cell.authorLabel.text  = answeredData[indexPath.row].asking_Name
-            cell.id = answeredData[indexPath.row].id
-        }
-        else {
-             cell.questionLabel.text = unansweredData[indexPath.row].question
-             cell.authorLabel.text  = unansweredData[indexPath.row].asking_Name
-            cell.id = unansweredData[indexPath.row].id
-        }
         cell.selectionStyle = .gray
         
         return cell
@@ -273,18 +250,14 @@ class AnsweredTableViewController: UITableViewController {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, view, nil) in
             if self.index {
                 self.answeredData.remove(at: indexPath.row)
-                self.questionManager.deleteQuestion(id: cell.id)
-                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-            }
-            else {
+            } else {
                 self.unansweredData.remove(at: indexPath.row)
-                self.questionManager.deleteQuestion(id: cell.id)
-                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
             }
+            self.questionManager.deleteQuestion(id: cell.id)
+            self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
         delete.image = UIImage(systemName: "trash")
         return UISwipeActionsConfiguration(actions: [delete])
     }
-    
 }
 
