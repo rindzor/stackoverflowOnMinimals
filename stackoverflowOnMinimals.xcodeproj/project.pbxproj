@@ -23,6 +23,8 @@
 		042732F32431E0D100896EFF /* ATableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042732F12431E0D100896EFF /* ATableViewCell.xib */; };
 		042732F52431E8A900896EFF /* UTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042732F42431E8A900896EFF /* UTableViewController.swift */; };
 		042732F72431F0D800896EFF /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042732F62431F0D800896EFF /* AnswerViewController.swift */; };
+		04E1DF9A2451907400820122 /* Question.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 04E1DF982451907400820122 /* Question.xcdatamodeld */; };
+		04E1DF9C245190EC00820122 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E1DF9B245190EC00820122 /* DBManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		042732F12431E0D100896EFF /* ATableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ATableViewCell.xib; sourceTree = "<group>"; };
 		042732F42431E8A900896EFF /* UTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTableViewController.swift; sourceTree = "<group>"; };
 		042732F62431F0D800896EFF /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
+		04E1DF992451907400820122 /* Question.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Question.xcdatamodel; sourceTree = "<group>"; };
+		04E1DF9B245190EC00820122 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,8 @@
 				042732F92435E68700896EFF /* View */,
 				042732FA2435E69600896EFF /* Controller */,
 				042732CA2430AB2700896EFF /* AppDelegate.swift */,
+				04E1DF9B245190EC00820122 /* DBManager.swift */,
+				04E1DF982451907400820122 /* Question.xcdatamodeld */,
 				042732CC2430AB2700896EFF /* SceneDelegate.swift */,
 				042732D02430AB2700896EFF /* Main.storyboard */,
 				042732D32430AB2900896EFF /* Assets.xcassets */,
@@ -195,7 +201,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				042732CB2430AB2700896EFF /* AppDelegate.swift in Sources */,
+				04E1DF9A2451907400820122 /* Question.xcdatamodeld in Sources */,
 				042732E22430ABDE00896EFF /* TableViewCell.swift in Sources */,
+				04E1DF9C245190EC00820122 /* DBManager.swift in Sources */,
 				042732F22431E0D100896EFF /* ATableViewCell.swift in Sources */,
 				04100686243E09EE006898DF /* QuestionData.swift in Sources */,
 				042732DF2430ABA800896EFF /* AnsweredTableViewController.swift in Sources */,
@@ -404,6 +412,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		04E1DF982451907400820122 /* Question.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				04E1DF992451907400820122 /* Question.xcdatamodel */,
+			);
+			currentVersion = 04E1DF992451907400820122 /* Question.xcdatamodel */;
+			path = Question.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 042732BF2430AB2600896EFF /* Project object */;
 }

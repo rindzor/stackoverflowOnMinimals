@@ -14,6 +14,8 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var authorLabel: UILabel!
     
     var id: Int!
+    var isSaved = false
+    var hasAnswer: Bool!
     
     
     override func awakeFromNib() {

@@ -82,7 +82,6 @@ class UTableViewController: UITableViewController {
             cell.literal.text = "A"
             cell.view.backgroundColor = UIColor.green
         }
-
         return cell
     }
     

@@ -16,4 +16,7 @@ struct QuestionData {
     let expert_id: Int
     let id: Int
     let question: String
+    var isSaved: Bool
+    var hasAnswer: Bool
 }
+
